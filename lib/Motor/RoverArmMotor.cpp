@@ -67,8 +67,10 @@ void RoverArmMotor::begin(double regP, double regI, double regD, double aggP, do
     aggKp = aggP;
     aggKi = aggI;
     aggKd = aggD;
-    Serial.println("RoverArmMotor::begin()");
-    Serial.printf("RoverArmMotor::begin() _brake_pin: %d\r\n", _brake_pin);
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("RoverArmMotor::begin()");
+        Serial.printf("RoverArmMotor::begin() _brake_pin: %d\r\n", _brake_pin);
+    #endif
     /*------------------Set pin modes------------------*/
     pinMode(_pwm, OUTPUT);
     pinMode(_dir, OUTPUT);
@@ -82,25 +84,34 @@ void RoverArmMotor::begin(double regP, double regI, double regD, double aggP, do
 
     /*------------------Initialize PWM------------------*/
     pwmInstance = new Teensy_PWM(_pwm, _pwm_freq, 0.0f); // 400Hz equals to 2500us period
-    Serial.println("RoverArmMotor::begin() 2");
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("RoverArmMotor::begin() 2");
+    #endif
 
     /*------------------Initialize timers------------------*/
     delay(500 * DELAY_FACTOR); // wait for the motor to start up
     this->stop();              // stop the motor
     delay(500 * DELAY_FACTOR); // wait for the motor to start up
     this->stop();              // stop the motor
-    Serial.println("_pwm = " + String(_pwm));
-    Serial.println("RoverArmMotor::begin() 3");
+
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("_pwm = " + String(_pwm));
+        Serial.println("RoverArmMotor::begin() 3");
+    #endif
 
     /*------------------Initialize PID------------------*/
     if (escType == CYTRON)
     {
-        Serial.println("RoverArmMotor::begin() 4 CYTRON");
-        internalPIDInstance = new PID(PID_DT, 99.0, -99.0, regP, regI, regD);
+        #if DEBUG_ROVER_ARM_MOTOR == 1
+            Serial.println("RoverArmMotor::begin() 4 CYTRON");
+            internalPIDInstance = new PID(PID_DT, 99.0, -99.0, regP, regI, regD);
+        #endif
     }
     else if (escType == BLUE_ROBOTICS)
     {
-        Serial.println("RoverArmMotor::begin() 4 SERVO");
+        #if DEBUG_ROVER_ARM_MOTOR == 1
+            Serial.println("RoverArmMotor::begin() 4 SERVO");
+        #endif
         // Max is actually 400 but this is safer.
         internalPIDInstance = new PID(PID_DT, 300.0, -300.0, regP, regI, regD);
     }
@@ -115,13 +126,19 @@ void RoverArmMotor::begin(double regP, double regI, double regD, double aggP, do
     if (error == -1)
     {
         encoder_error = 1;
-        printf("ERROR: get_current_angle_sw() returned -1 from begin()\r\n");
+        #if DEBUG_ROVER_ARM_MOTOR == 1
+            printf("ERROR: get_current_angle_sw() returned -1 from begin()\r\n");
+        #endif
         return;
     }
-    Serial.println("Motor current angle: " + String(currentAngle));
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("Motor current angle: " + String(currentAngle));
+    #endif
     setpoint = currentAngle;
     lastAngle = currentAngle;
-    Serial.println("RoverArmMotor::begin() 5");
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("RoverArmMotor::begin() 5");
+    #endif
 
     /*------------------Set PID parameters------------------*/
     regKp = regP;
@@ -131,13 +148,19 @@ void RoverArmMotor::begin(double regP, double regI, double regD, double aggP, do
     // if(brake)  engage_brake(); //use brake if there is one
     if (_brake_pin != -1)
         engage_brake(); // use brake if there is one
-    Serial.println("RoverArmMotor::begin() 6 BEFORE MASTERING");
+    
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("RoverArmMotor::begin() 6 BEFORE MASTERING");
+    #endif
+
     delay(250 * DELAY_FACTOR); // wait for the motor to start up
     this->stop();              // stop the motor
 
     /*------------------Mastering------------------*/
 #if MASTERING == 1
-    Serial.println("RoverArmMotor::begin() 7 Mastering");
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.println("RoverArmMotor::begin() 7 Mastering");
+    #endif
     delay(250 * DELAY_FACTOR); // wait for the motor to start up
     this->reverse();
     delay(250 * DELAY_FACTOR); // wait for the motor to start up
@@ -455,7 +478,9 @@ double RoverArmMotor::get_setpoint()
 // Remove gear_ration burden from user.
 bool RoverArmMotor::new_setpoint(double angle)
 {
-    Serial.printf("RoverArmMotor::new_setpoint() angle = %f\r\n", angle);
+    #if DEBUG_ROVER_ARM_MOTOR == 1
+        Serial.printf("RoverArmMotor::new_setpoint() angle = %f\r\n", angle);
+    #endif
     double temp_setpoint = angle * gear_ratio;
     // Extra step for wrist_waist.
     if (wrist_waist)
