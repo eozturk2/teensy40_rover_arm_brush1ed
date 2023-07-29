@@ -14,8 +14,8 @@
 #include <bitset>
 #include <limits>
 
-#define MIN_FLOAT -std::numeric_limits<float>::infinity()
-#define MAX_FLOAT std::numeric_limits<float>::infinity()
+#define MIN_FLOAT -std::numeric_limits<float>::max()
+#define MAX_FLOAT std::numeric_limits<float>::max()
 static void attach_all_interrupts();
 
 double setpoint = 0;
