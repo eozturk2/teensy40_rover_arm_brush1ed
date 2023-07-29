@@ -496,7 +496,6 @@ void limit_waist_max_int()
 void limit_waist_min_int()
 {
     unsigned long now = millis();
-    // Debouncing is successful...
     if (now - last_trigger_time_waist_min > DEBOUNCE_DELAY)
     {
         last_trigger_time_waist_min = now;
