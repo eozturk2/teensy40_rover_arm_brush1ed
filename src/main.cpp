@@ -16,8 +16,8 @@
 
 // No additional #include statements are needed
 
-#define MIN_FLOAT -std::numeric_limits<float>::infinity()
-#define MAX_FLOAT std::numeric_limits<float>::infinity()
+#define MIN_FLOAT -std::numeric_limits<float>::max()
+#define MAX_FLOAT std::numeric_limits<float>::max()
 
 extern RoverArmMotor Wrist_Roll;
 extern RoverArmMotor Wrist_Pitch;
