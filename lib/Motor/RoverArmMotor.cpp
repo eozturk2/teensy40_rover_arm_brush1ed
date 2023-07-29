@@ -195,8 +195,8 @@ void RoverArmMotor::tick()
         {
             this->stop();
             this->reverse(10);
-            Serial.println("REVERSING!");
 #if DEBUG_ROVER_ARM_MOTOR
+            Serial.println("REVERSING!");
             Serial.println("RoverArmMotor::tick() _limit_pin_max");
 #endif
             return;
@@ -205,8 +205,8 @@ void RoverArmMotor::tick()
         {
             this->stop();
             this->forward(10);
-            Serial.println("ADVANCING!");
 #if DEBUG_ROVER_ARM_MOTOR
+            Serial.println("ADVANCING!");
             Serial.println("RoverArmMotor::tick() _limit_pin_min");
 #endif
             return;
