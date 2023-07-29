@@ -421,7 +421,7 @@ int RoverArmMotor::reverse(int percentage_speed)
     else if (escType == BLUE_ROBOTICS)
     {
         this->disengage_brake();
-        double duty_cycle = BLUE_ROBOTICS_STOP_DUTY_CYCLE - (BLUE_ROBOTICS_STOP_DUTY_CYCLE * percentage_speed / 100);
+        float duty_cycle = BLUE_ROBOTICS_STOP_DUTY_CYCLE - (BLUE_ROBOTICS_STOP_DUTY_CYCLE * ((float) percentage_speed / 100.0f));
         pwmInstance->setPWM(_pwm, _pwm_freq, duty_cycle);
         return 0;
     }
