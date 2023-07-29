@@ -261,6 +261,8 @@ void rover_arm_loop()
     }
     spiLock = false;
 }
+
+// Doesn't seem to be used anymore?
 void test_limit_switches()
 {
     static unsigned long lastPrint = 0;     // Initialize lastPrint variable
@@ -494,6 +496,7 @@ void limit_waist_max_int()
 void limit_waist_min_int()
 {
     unsigned long now = millis();
+    // Debouncing is successful...
     if (now - last_trigger_time_waist_min > DEBOUNCE_DELAY)
     {
         last_trigger_time_waist_min = now;
@@ -512,31 +515,32 @@ void limit_waist_min_int()
 
 #endif
 
+// Not sure why these trigger on pin change instead of falling edge. Do the limit switches work fine as they are?
 void attach_all_interrupts()
 {
 #if TEST_WRIST_PITCH_CYTRON == 1
-    attachInterrupt(digitalPinToInterrupt(LIMIT_WRIST_PITCH_MAX), limit_wrist_pitch_max_int, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(LIMIT_WRIST_PITCH_MIN), limit_wrist_pitch_min_int, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_WRIST_PITCH_MAX), limit_wrist_pitch_max_int, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_WRIST_PITCH_MIN), limit_wrist_pitch_min_int, FALLING);
 #endif
 
 #if TEST_END_EFFECTOR_CYTRON == 1
-    attachInterrupt(digitalPinToInterrupt(LIMIT_END_EFFECTOR_MAX), limit_end_effector_max_int, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(LIMIT_END_EFFECTOR_MIN), limit_end_effector_min_int, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_END_EFFECTOR_MAX), limit_end_effector_max_int, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_END_EFFECTOR_MIN), limit_end_effector_min_int, FALLING);
 #endif
 
 #if TEST_ELBOW_SERVO == 1
-    attachInterrupt(digitalPinToInterrupt(LIMIT_ELBOW_MAX), limit_elbow_max_int, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(LIMIT_ELBOW_MIN), limit_elbow_min_int, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_ELBOW_MAX), limit_elbow_max_int, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_ELBOW_MIN), limit_elbow_min_int, FALLING);
 #endif
 
 #if TEST_SHOULDER_SERVO == 1
-    attachInterrupt(digitalPinToInterrupt(LIMIT_SHOULDER_MAX), limit_shoulder_max_int, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(LIMIT_SHOULDER_MIN), limit_shoulder_min_int, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_SHOULDER_MAX), limit_shoulder_max_int, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_SHOULDER_MIN), limit_shoulder_min_int, FALLING);
 #endif
 
 #if TEST_WAIST_SERVO == 1
-    attachInterrupt(digitalPinToInterrupt(LIMIT_WAIST_MAX), limit_waist_max_int, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(LIMIT_WAIST_MIN), limit_waist_min_int, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_WAIST_MAX), limit_waist_max_int, FALLING);
+    attachInterrupt(digitalPinToInterrupt(LIMIT_WAIST_MIN), limit_waist_min_int, FALLING);
 #endif
 }
 
