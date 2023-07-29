@@ -544,6 +544,7 @@ void attach_all_interrupts()
 #endif
 }
 
+// Also doesn't seem to be used
 void serialEvent()
 {
     while (Serial.available())
